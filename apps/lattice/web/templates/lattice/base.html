@@ -1,0 +1,12 @@
+{% load static %}<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="csrf" content="{{ csrf_token }}">
+<title>{% block title %}FDM Lattice{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'lattice/css/dashboard.css' %}"></head><body>
+<header><div><h1>{% block heading %}{% endblock %}</h1><p class="sub">{% block sub %}{% endblock %}</p></div>
+<div class="row"><nav class="pages" aria-label="Dashboards"><a href="{% url 'ml' %}" {% if page == 'ml' %}aria-current="page"{% endif %}>ML surrogate</a><a href="{% url 'twin' %}" {% if page == 'twin' %}aria-current="page"{% endif %}>ANSYS digital twin</a></nav>
+<button onclick="theme()" aria-label="Switch light or dark theme">Theme</button></div></header>
+<div class="wrap"><aside class="panel ctl" id="ctl"></aside><main><div class="tabs" id="tabs" role="tablist"></div>{% block content %}{% endblock %}</main></div>
+<script src="{% static 'lattice/js/api.js' %}"></script><script src="{% static 'lattice/js/charts.js' %}"></script><script src="{% static 'lattice/js/controls.js' %}"></script>
+{% block scripts %}{% endblock %}</body></html>

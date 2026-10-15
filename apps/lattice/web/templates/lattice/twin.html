@@ -1,0 +1,19 @@
+{% extends "lattice/base.html" %}{% load static %}
+{% block title %}FDM Lattice Digital Twin for ANSYS{% endblock %}
+{% block heading %}Lattice Digital Twin for ANSYS{% endblock %}
+{% block sub %}A virtual compression test driven by the surrogate. Pick a design, squash it, compare topologies, then export a starting ANSYS model and check your FEA result against the twin.{% endblock %}
+{% block content %}
+<section id="tab0"><div class="grid g2"><div class="panel"><h2>Virtual compression test</h2><canvas class="cv" id="lat" style="height:420px"></canvas>
+<div class="row" style="margin-top:10px"><button class="pri" id="play">Play</button><input type="range" id="eps" min="0" max="50" step="0.5" value="0" style="flex:1;min-width:140px" aria-label="Compressive strain"><b id="epsv" style="min-width:90px"></b></div>
+<p class="note">Walls shift from blue to amber as stress approaches the predicted peak. Lateral movement uses the predicted Poisson ratio. Geometry is a schematic of the topology, not a meshed FEA result.</p></div>
+<div class="panel"><h2>Live readout</h2><div class="grid g3" id="rd"></div><h3 style="margin-top:14px">Predicted properties</h3><div class="grid g3" id="kp"></div></div></div></section>
+<section id="tab1" class="hide"><div class="panel"><h2>Stress-strain response, four topologies</h2><div class="leg" id="sl"></div><canvas class="ch" id="ss" style="height:360px"></canvas>
+<p class="note">Idealised curve built from the surrogate: linear elastic up to predicted peak stress, a gently softening plateau, then densification near 55% strain. The marker follows the strain slider on the first tab. It shows trends, not post-peak failure detail.</p></div></section>
+<section id="tab2" class="hide"><div class="grid g22"><div class="panel"><h2>Model set-up</h2><div class="sc" id="su"></div></div>
+<div class="panel"><h2>APDL starting script</h2><p class="note">Beam-network model (BEAM188) of the 4 x 4 lattice with a prescribed top displacement. Material values are typical bulk numbers: replace them with your tensile coupon data.</p>
+<div class="row"><button id="sel">Select script</button><button id="cp">Copy</button><span class="note" id="cps"></span></div><textarea id="apdl" readonly aria-label="APDL script"></textarea></div></div></section>
+<section id="tab3" class="hide"><div class="panel"><h2>Check your ANSYS result against the twin</h2><p class="note" id="vn"></p>
+<div class="grid g3"><div><label>ANSYS elastic modulus (MPa)</label><input type="text" id="ve" inputmode="decimal"></div><div><label>ANSYS peak stress (MPa)</label><input type="text" id="vp" inputmode="decimal"></div><div><label>ANSYS Poisson ratio</label><input type="text" id="vn2" inputmode="decimal"></div></div>
+<div class="sc" id="vt" style="margin-top:14px"></div></div></section>
+{% endblock %}
+{% block scripts %}<script src="{% static 'lattice/js/twin_page.js' %}"></script>{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "lattice/base.html" %}{% load static %}
+{% block title %}FDM Lattice Surrogate Lab{% endblock %}
+{% block heading %}FDM Lattice Surrogate Lab{% endblock %}
+{% block sub %}Choose a topology, material and geometry. The trained surrogate predicts stiffness, strength, Poisson ratio and energy absorption for it, and can search the design space for the best option.{% endblock %}
+{% block content %}
+<section id="tab0"><div class="grid g2"><div class="panel"><h2>Your lattice</h2><canvas class="cv" id="lat"></canvas><p class="note" id="latnote"></p></div>
+<div class="panel"><h2>Predicted performance</h2><div class="grid g3" id="kpis"></div><h3 style="margin-top:14px">Closest measured design</h3><div id="near" class="note"></div></div></div>
+<div class="panel" style="margin-top:14px"><div class="row"><h2 style="margin:0">Explore the possibilities</h2><select id="metric" style="width:auto"></select></div>
+<div class="grid g22" style="margin-top:10px"><div><h3>Same settings, all four topologies</h3><div id="cmp"></div></div>
+<div><h3>Sensitivity of your design</h3><div class="row"><span class="note">Vary</span><select id="sx" style="width:auto"><option value="cell_size">Cell size L</option><option value="wall_thickness">Wall thickness T</option><option value="nozzle_temp">Nozzle temperature</option></select></div><canvas class="ch" id="sens"></canvas></div></div></div></section>
+<section id="tab1" class="hide"><div class="panel"><h2>Find the best design</h2><p class="note">Searches about 8,000 combinations of topology, angle, material, cell size, wall thickness and layer height inside the range of your data, scored by the surrogate.</p>
+<div class="grid g22"><div><label>Goal</label><select id="goal"></select></div>
+<div><label>Maximum relative density<b id="rmv">60 %</b></label><input type="range" id="rm" min="10" max="90" value="60"><label>Minimum elastic modulus<b id="emv">0 MPa</b></label><input type="range" id="em" min="0" max="2000" step="50" value="0"></div></div>
+<div class="row" style="margin-top:12px"><button class="pri" id="run">Search designs</button><span class="note" id="rstat"></span></div><div class="sc" id="res" style="margin-top:12px"></div></div></section>
+<section id="tab2" class="hide"><div class="panel"><h2>Model comparison on held-out test data</h2><p class="note" id="mnote"></p><div class="sc" id="mtab"></div></div>
+<div class="grid g22" style="margin-top:14px"><div class="panel"><div class="row"><h2 style="margin:0">Actual vs predicted</h2><select id="mt" style="width:auto"></select></div><canvas class="ch" id="avp"></canvas><p class="note">Dashed line is a perfect prediction. Points are the held-out test rows.</p></div>
+<div class="panel"><h2>What drives this property</h2><div id="imp"></div><p class="note">Drop in test R² when that input is shuffled.</p></div></div></section>
+<section id="tab3" class="hide"><div class="panel"><div class="row"><select id="dx" style="width:auto"></select><span class="note">vs</span><select id="dy" style="width:auto"></select><label style="margin:0;gap:6px;justify-content:flex-start"><input type="checkbox" id="dlog"> log y</label><label style="margin:0;gap:6px;justify-content:flex-start"><input type="checkbox" id="dtest"> test rows only</label></div>
+<canvas class="ch" id="dsc" style="height:380px;margin-top:10px"></canvas><div class="leg" id="dleg"></div><p class="note">The star marks your current design.</p></div></section>
+{% endblock %}
+{% block scripts %}<script src="{% static 'lattice/js/ml_page.js' %}"></script>{% endblock %}
